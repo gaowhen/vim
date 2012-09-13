@@ -259,6 +259,8 @@ if has("autocmd")
     autocmd BufRead * :lcd! %:p:h
     " scss 文件语法高亮
     au BufRead,BufNewFile *.scss set filetype=scss
+    " compile coffeescript on write
+    au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 endif
 
 " 自动载入VIM配置文件
@@ -473,3 +475,5 @@ Bundle 'nono/vim-handlebars'
 Bundle 'mako.vim'
 Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'vim-scripts/Conque-Shell'
