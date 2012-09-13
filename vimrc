@@ -257,6 +257,8 @@ if has("autocmd")
     " 将指定文件的换行符转换成 UNIX 格式
     au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
     autocmd BufRead * :lcd! %:p:h
+    " scss 文件语法高亮
+    au BufRead,BufNewFile *.scss set filetype=scss
 endif
 
 " 自动载入VIM配置文件
@@ -465,8 +467,9 @@ Bundle 'tpope/vim-haml'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'statianzo/vim-jade'
 Bundle 'msanders/snipmate.vim'
-" Bundle 'myusuf3/numbers.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'skammer/vim-css-color'
 Bundle 'nono/vim-handlebars'
 Bundle 'mako.vim'
+Bundle 'suan/vim-instant-markdown'
+Bundle 'cakebaker/scss-syntax.vim'
