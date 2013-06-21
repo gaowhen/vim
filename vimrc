@@ -62,7 +62,7 @@ if has('gui_running')
         " F11 最大化
         map <f11> :call libcallnr('fullscreen.dll', 'ToggleFullScreen', 0)<cr>
         " 字体配置
-        set guifont=Anonymous_Pro:h14
+        set guifont=Anonymous_Pro:h16
     endif
     if has("unix") && !has('gui_macvim')
         set guifont=Anonymous\ Pro:h14
@@ -78,7 +78,7 @@ if has('gui_running')
             " 开启抗锯齿渲染
             set anti
             " MacVim 下的字体配置
-            set guifont=Anonymous\ Pro:h16
+            set guifont=Anonymous\ Pro:h18
             "set guifont=monaco:h13
             set transparency=0
             set lines=222 columns=222
@@ -453,6 +453,9 @@ call vundle#rc()
 set laststatus=2
 set statusline=%t\ %1*%m%*\ %1*%r%*\ %1*%h%*\ %1*%w%*%=\ [%{VimBuddy()}]\ [%Y:%{toupper(&ff)}:%{toupper(&fenc!=''?&fenc:&enc)}]\ [ASCII:%b]\ [%l%2*/%L(%p%%)%*,%v]
 
+" ctrlp
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
@@ -477,3 +480,4 @@ Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'vim-scripts/Conque-Shell'
+Bundle 'kien/ctrlp.vim'
