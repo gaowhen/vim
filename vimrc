@@ -62,10 +62,10 @@ if has('gui_running')
         " F11 最大化
         map <f11> :call libcallnr('fullscreen.dll', 'ToggleFullScreen', 0)<cr>
         " 字体配置
-        set guifont=Anonymous_Pro:h14
+        set guifont=Anonymous_Pro:h16
     endif
     if has("unix") && !has('gui_macvim')
-        set guifont=Anonymous\ Pro:h14
+        set guifont=Anonymous\ Pro:h18
     endif
     if has("mac") || has("gui_macvim")
         if has("gui_macvim")
@@ -78,7 +78,7 @@ if has('gui_running')
             " 开启抗锯齿渲染
             set anti
             " MacVim 下的字体配置
-            set guifont=Anonymous\ Pro:h16
+            set guifont=Anonymous\ Pro:h18
             "set guifont=monaco:h13
             set transparency=0
             set lines=222 columns=222
@@ -144,6 +144,10 @@ else
     hi FoldColumn cterm=none ctermbg=none ctermfg=4
 endif
 
+"
+set showmatch
+set matchtime=5
+hi MatchParen ctermfg=green
 
 " ====================
 " GLOBAL CONFIG
@@ -256,7 +260,8 @@ if has("autocmd")
     au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.m,*.h setf objc
     " 将指定文件的换行符转换成 UNIX 格式
     au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
-    autocmd BufRead * :lcd! %:p:h
+    " auto switch to current file path
+    " autocmd BufRead * :lcd! %:p:h
     " scss 文件语法高亮
     au BufRead,BufNewFile *.scss set filetype=scss
     " compile coffeescript on write
@@ -437,6 +442,9 @@ let NERDTreeShowBookmarks=1
 nmap <C-e> :BufExplorer<cr>
 nmap <f2>  :BufExplorer<cr>
 
+" shire vim config
+let g:shirevim#app="movie"
+
 
 " =====================
 " PLUGIN MANAGMENT
@@ -448,6 +456,13 @@ set wildmode=longest:full,full
 " use vundle manage plugins
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+
+" Syntastic
+let g:syntastic_python_checker = 'flake8'
+let g:syntastic_python_checker_args = '--ignore="E401,E501"'
+let g:syntastic_javascript_checker = 'jshint'
+let g:loaded_html_syntax_checker = 1
+let g:syntastic_auto_loc_list=0
 
 " status bar
 set laststatus=2
@@ -462,18 +477,20 @@ Bundle 'bufexplorer.zip'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'jsbeautify'
 Bundle 'undofile.vim'
-Bundle 'Rainbow-Parenthsis-Bundle'
+"Bundle 'Rainbow-Parenthsis-Bundle'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-haml'
+"Bundle 'tpope/vim-haml'
 Bundle 'Lokaltog/vim-powerline'
-Bundle 'statianzo/vim-jade'
+"Bundle 'statianzo/vim-jade'
 Bundle 'msanders/snipmate.vim'
-Bundle 'Lokaltog/vim-easymotion'
+"Bundle 'Lokaltog/vim-easymotion'
 Bundle 'skammer/vim-css-color'
-Bundle 'nono/vim-handlebars'
+"Bundle 'nono/vim-handlebars'
 Bundle 'mako.vim'
-Bundle 'suan/vim-instant-markdown'
+"Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'vim-scripts/Conque-Shell'
+"Bundle 'kchmck/vim-coffee-script'
+"Bundle 'vim-scripts/Conque-Shell'
+Bundle 'http://code.dapps.douban.com/shire_vim.git'
+Bundle 'scrooloose/syntastic'
