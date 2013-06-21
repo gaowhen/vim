@@ -468,6 +468,9 @@ let g:syntastic_auto_loc_list=0
 set laststatus=2
 set statusline=%t\ %1*%m%*\ %1*%r%*\ %1*%h%*\ %1*%w%*%=\ [%{VimBuddy()}]\ [%Y:%{toupper(&ff)}:%{toupper(&fenc!=''?&fenc:&enc)}]\ [ASCII:%b]\ [%l%2*/%L(%p%%)%*,%v]
 
+" ctrlp
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
@@ -488,9 +491,12 @@ Bundle 'msanders/snipmate.vim'
 Bundle 'skammer/vim-css-color'
 "Bundle 'nono/vim-handlebars'
 Bundle 'mako.vim'
-"Bundle 'suan/vim-instant-markdown'
+Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
 "Bundle 'kchmck/vim-coffee-script'
 "Bundle 'vim-scripts/Conque-Shell'
 Bundle 'http://code.dapps.douban.com/shire_vim.git'
 Bundle 'scrooloose/syntastic'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'vim-scripts/Conque-Shell'
+Bundle 'kien/ctrlp.vim'
