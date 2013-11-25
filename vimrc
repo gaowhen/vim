@@ -70,7 +70,7 @@ if has('gui_running')
     if has("mac") || has("gui_macvim")
         if has("gui_macvim")
         " 启动后自动全屏
-            set fullscreen
+            "set fullscreen
             " trick vim 窗口最大化
             set lines=100 columns=400
             "macvim 自有属性，全屏模式下自动最大化
@@ -155,13 +155,13 @@ hi MatchParen ctermfg=green
 "
 " 使用空格来替换tab
 set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set smarttab
 
 " 自动设置 tab 宽度
-autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 textwidth=79
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
@@ -264,6 +264,8 @@ if has("autocmd")
     " autocmd BufRead * :lcd! %:p:h
     " scss 文件语法高亮
     au BufRead,BufNewFile *.scss set filetype=scss
+    " jade syntax
+    au BufRead,BufNewFile *.jade set filetype=jade
     " compile coffeescript on write
     au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 endif
@@ -389,7 +391,7 @@ nmap <leader>s :w!<cr>
 nmap <leader>w :wq!<cr>
 nmap <leader>q :q!<cr>
 nmap <C-t>   :tabnew<cr>
-nmap <C-p>   :tabprevious<cr>
+"nmap <C-p>   :tabprevious<cr>
 nmap <C-n>   :tabnext<cr>
 nmap <C-k>   :tabclose<cr>
 nmap <C-Tab> :tabnext<cr>
@@ -458,18 +460,20 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Syntastic
-let g:syntastic_python_checker = 'flake8'
-let g:syntastic_python_checker_args = '--ignore="E401,E501"'
-let g:syntastic_javascript_checker = 'jshint'
-let g:loaded_html_syntax_checker = 1
-let g:syntastic_auto_loc_list=0
+"let g:syntastic_python_checker = 'flake8'
+"let g:syntastic_python_checker_args = '--ignore="E401,E501"'
+"let g:syntastic_javascript_checker = 'jshint'
+"let g:loaded_html_syntax_checker = 1
+"let g:syntastic_auto_loc_list=0
 
 " status bar
 set laststatus=2
-set statusline=%t\ %1*%m%*\ %1*%r%*\ %1*%h%*\ %1*%w%*%=\ [%{VimBuddy()}]\ [%Y:%{toupper(&ff)}:%{toupper(&fenc!=''?&fenc:&enc)}]\ [ASCII:%b]\ [%l%2*/%L(%p%%)%*,%v]
+"set statusline=%t\ %1*%m%*\ %1*%r%*\ %1*%h%*\ %1*%w%*%=\ [%{VimBuddy()}]\ [%Y:%{toupper(&ff)}:%{toupper(&fenc!=''?&fenc:&enc)}]\ [ASCII:%b]\ [%l%2*/%L(%p%%)%*,%v]
 
 " ctrlp
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
 
 " let Vundle manage Vundle
@@ -486,17 +490,18 @@ Bundle 'tpope/vim-fugitive'
 "Bundle 'tpope/vim-haml'
 Bundle 'Lokaltog/vim-powerline'
 "Bundle 'statianzo/vim-jade'
+Bundle 'digitaltoad/vim-jade'
 Bundle 'msanders/snipmate.vim'
 "Bundle 'Lokaltog/vim-easymotion'
 Bundle 'skammer/vim-css-color'
 "Bundle 'nono/vim-handlebars'
-Bundle 'mako.vim'
 Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
 "Bundle 'kchmck/vim-coffee-script'
 "Bundle 'vim-scripts/Conque-Shell'
-Bundle 'http://code.dapps.douban.com/shire_vim.git'
 Bundle 'scrooloose/syntastic'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'vim-scripts/Conque-Shell'
 Bundle 'kien/ctrlp.vim'
+Bundle 'rking/ag.vim'
+Bundle 'groenewege/vim-less'
