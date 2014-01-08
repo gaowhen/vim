@@ -291,6 +291,7 @@ function RemoveTrailingWhitespace()
         call cursor(b:curline, b:curcol)
     endif
 endfunction
+
 autocmd BufWritePre * call RemoveTrailingWhitespace()
 
 
@@ -475,6 +476,11 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
+" ctrlfs
+nnoremap <F3> :CtrlSF<space>
+"nmap <F3> <ESC>:CtrlSF <c-r><c-w><CR>
+nmap <C-F3> <ESC>:CtrlSFOpen<CR>
+
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
@@ -498,10 +504,10 @@ Bundle 'skammer/vim-css-color'
 Bundle 'suan/vim-instant-markdown'
 Bundle 'cakebaker/scss-syntax.vim'
 "Bundle 'kchmck/vim-coffee-script'
-"Bundle 'vim-scripts/Conque-Shell'
 Bundle 'scrooloose/syntastic'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'vim-scripts/Conque-Shell'
 Bundle 'kien/ctrlp.vim'
 Bundle 'rking/ag.vim'
 Bundle 'groenewege/vim-less'
+Bundle 'dyng/ctrlsf.vim'
