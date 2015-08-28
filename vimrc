@@ -4,6 +4,53 @@
 "
 " ==========================================================
 
+" set the runtime path to include Vundle and initialize
+" be iMproved, required
+set nocompatible
+" required
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+" other plugins
+Plugin 'scrooloose/nerdtree'
+Plugin 'bufexplorer.zip'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'jsbeautify'
+Plugin 'undofile.vim'
+"Bundle 'Rainbow-Parenthsis-Bundle'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-fugitive'
+"Bundle 'tpope/vim-haml'
+"Plugin 'Lokaltog/vim-powerline'
+Plugin 'bling/vim-airline'
+"Bundle 'statianzo/vim-jade'
+"Bundle 'digitaltoad/vim-jade'
+Plugin 'msanders/snipmate.vim'
+"Bundle 'Lokaltog/vim-easymotion'
+Plugin 'skammer/vim-css-color'
+"Bundle 'nono/vim-handlebars'
+Plugin 'suan/vim-instant-markdown'
+"Bundle 'cakebaker/scss-syntax.vim'
+"Bundle 'kchmck/vim-coffee-script'
+"Bundle 'scrooloose/syntastic'
+"Bundle 'kchmck/vim-coffee-script'
+Plugin 'vim-scripts/Conque-Shell'
+Plugin 'kien/ctrlp.vim'
+Plugin 'rking/ag.vim'
+"Bundle 'groenewege/vim-less'
+Plugin 'dyng/ctrlsf.vim'
+Plugin 'walm/jshint.vim'
+"Bundle 'altercation/vim-colors-solarized'
+Plugin 'wavded/vim-stylus'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'vim-scripts/mako.vim'
+Plugin 'klen/python-mode'
+Plugin 'comments.vim'
+call vundle#end()
+filetype plugin indent on
+
 
 " ====================
 " Enviroment
@@ -21,21 +68,21 @@ set history=500
 " =====================
 
 if has("multi_byte")
-    set encoding=utf-8
-    " English messages only
-    "language messages zh_CN.utf-8
-    if has('win32')
-        language english
-        let &termencoding=&encoding " 处理consle输出乱码
-    endif
-    set fencs=utf-8,gbk,chinese,latin1
-    set formatoptions+=mM
-    set nobomb " 不使用 Unicode 签名
-    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        set ambiwidth=double
-    endif
+  set encoding=utf-8
+  " English messages only
+  "language messages zh_CN.utf-8
+  if has('win32')
+    language english
+    let &termencoding=&encoding " 处理consle输出乱码
+  endif
+  set fencs=utf-8,gbk,chinese,latin1
+  set formatoptions+=mM
+  set nobomb " 不使用 Unicode 签名
+  if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+    set ambiwidth=double
+  endif
 else
-    echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
+  echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
 endif
 
 
@@ -44,65 +91,65 @@ endif
 " ====================
 
 if has('gui_running')
-    set guioptions-=m
-    set guioptions-=T
-    map <silent> <F3> :if &guioptions =~# 'T' <Bar>
-            \set guioptions-=T <Bar>
-            \set guioptions-=m <bar>
+  set guioptions-=m
+  set guioptions-=T
+  map <silent> <F3> :if &guioptions =~# 'T' <Bar>
+        \set guioptions-=T <Bar>
+        \set guioptions-=m <bar>
         \else <Bar>
-            \set guioptions+=T <Bar>
-            \set guioptions+=m <Bar>
+        \set guioptions+=T <Bar>
+        \set guioptions+=m <Bar>
         \endif<CR>
-    if has('gui_macvim')
-        set guioptions+=e
-    endif
-    if has("win32")
-        " Windows 兼容配置
-        source $VIMRUNTIME/mswin.vim
-        " F11 最大化
-        map <f11> :call libcallnr('fullscreen.dll', 'ToggleFullScreen', 0)<cr>
-        " 字体配置
-        set guifont=Anonymous_Pro:h16
-    endif
-    if has("unix") && !has('gui_macvim')
-        set guifont=Anonymous\ Pro:h18
-    endif
-    if has("mac") || has("gui_macvim")
-        if has("gui_macvim")
-        " 启动后自动全屏
-            "set fullscreen
-            " trick vim 窗口最大化
-            set lines=100 columns=400
-            "macvim 自有属性，全屏模式下自动最大化
-            set fuoptions=maxvert,maxhorz
-            " 开启抗锯齿渲染
-            set anti
-            " MacVim 下的字体配置
-            set guifont=Anonymous\ Pro:h18
-            "set guifont=monaco:h13
-            set transparency=0
-            set lines=222 columns=222
-            " 使用 MacVim 原生的全屏幕功能
-            let s:lines=&lines
-            let s:columns=&columns
-            func! FullScreenEnter()
-                set lines=999 columns=999
-                set fu
-            endf
-            func! FullScreenLeave()
-                let &lines=s:lines
-                let &columns=s:columns
-                set nofu
-            endf
-            func! FullScreenToggle()
-                if &fullscreen
-                    call FullScreenLeave()
-                else
-                    call FullScreenEnter()
-                endif
-            endf
+  if has('gui_macvim')
+    set guioptions+=e
+  endif
+  if has("win32")
+    " Windows 兼容配置
+    source $VIMRUNTIME/mswin.vim
+    " F11 最大化
+    map <f11> :call libcallnr('fullscreen.dll', 'ToggleFullScreen', 0)<cr>
+    " 字体配置
+    set guifont=Anonymous_Pro:h16
+  endif
+  if has("unix") && !has('gui_macvim')
+    set guifont=Anonymous\ Pro:h18
+  endif
+  if has("mac") || has("gui_macvim")
+    if has("gui_macvim")
+      " 启动后自动全屏
+      "set fullscreen
+      " trick vim 窗口最大化
+      set lines=100 columns=400
+      "macvim 自有属性，全屏模式下自动最大化
+      set fuoptions=maxvert,maxhorz
+      " 开启抗锯齿渲染
+      set anti
+      " MacVim 下的字体配置
+      set guifont=Anonymous\ Pro:h20
+      "set guifont=monaco:h13
+      set transparency=0
+      set lines=222 columns=222
+      " 使用 MacVim 原生的全屏幕功能
+      let s:lines=&lines
+      let s:columns=&columns
+      func! FullScreenEnter()
+        set lines=999 columns=999
+        set fu
+      endf
+      func! FullScreenLeave()
+        let &lines=s:lines
+        let &columns=s:columns
+        set nofu
+      endf
+      func! FullScreenToggle()
+        if &fullscreen
+          call FullScreenLeave()
+        else
+          call FullScreenEnter()
         endif
+      endf
     endif
+  endif
 endif
 
 set ruler " show rulerset number " show line number
@@ -124,24 +171,27 @@ set guioptions-=L " 不显示垂直分割窗口左侧的垂直滚动条
 " =====================
 
 if has('syntax')
-    " 保证语法高亮
-    syntax on
-    if has('gui_running')
-        colorscheme yytextmate
-        let g:colors_name="yytextmate"
-    endif
+  " 保证语法高亮
+  syntax on
+  if has('gui_running')
+    "colorscheme yytextmate
+    "let g:colors_name="yytextmate"
+    colorscheme solarized
+    let g:colors_name="solarized"
+    set background=dark
+  endif
 endif
 
 "Highlight current
 if has("gui_running")
-    set cursorline
-    set cursorcolumn
-    hi cursorline guibg=#0D142C
-    hi CursorColumn guibg=#0D142C
+  set cursorline
+  set cursorcolumn
+  hi cursorline guibg=#0D142C
+  hi CursorColumn guibg=#0D142C
 else
-    " fold colors
-    hi Folded cterm=none ctermbg=none ctermfg=4
-    hi FoldColumn cterm=none ctermbg=none ctermfg=4
+  " fold colors
+  hi Folded cterm=none ctermbg=none ctermfg=4
+  hi FoldColumn cterm=none ctermbg=none ctermfg=4
 endif
 
 "
@@ -189,17 +239,19 @@ set list
 set listchars=tab:\|\ ,nbsp:%,trail:-
 
 " 设定行首tab为灰色
-highlight LeaderTab guifg=#666666
+highlight LeaderTab guifg=#ccc
 
 " 匹配行首tab
 match LeaderTab /\t/
 
 " 搜索时无视大小写
-set ignorecase
+" set ignorecase
+set smartcase
 " 高亮显示结果
 set hlsearch
 " 在输入要搜索的文字时，vim会实时匹配
 set incsearch
+set paste
 
 
 "cliboard seting
@@ -229,45 +281,45 @@ set rnu
 " =====================
 
 if has("autocmd")
-    filetype plugin indent on " 打开文件类型检测
-    augroup vimrcEx " 记住上次文件位置
-        au!
-        autocmd FileType text setlocal textwidth=80
-        autocmd BufReadPost *
-                    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-                    \   exe "normal g`\"" |
-                    \ endif
-    augroup END
+  filetype plugin indent on " 打开文件类型检测
+  augroup vimrcEx " 记住上次文件位置
+    au!
+    autocmd FileType text setlocal textwidth=80
+    autocmd BufReadPost *
+          \ if line("'\"") > 0 && line("'\"") <= line("$") |
+          \   exe "normal g`\"" |
+          \ endif
+  augroup END
 
-    " JavaScript 语法高亮
-    au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
-    au BufRead,BufNewFile *.js setf jquery
-    " 给各语言文件添加 Dict
-    if has('win32')
-        au FileType php setlocal dict+=$VIM/vimfiles/dict/php_funclist.dict
-        au FileType css setlocal dict+=$VIM/vimfiles/dict/css.dict
-        au FileType javascript setlocal dict+=$VIM/vimfiles/dict/javascript.dict
-    else
-        au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
-        au FileType css setlocal dict+=~/.vim/dict/css.dict
-        au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
-    endif
-    " 格式化 JavaScript 文件
-    au FileType javascript map <f3> :call g:Jsbeautify()<cr>
-    " CSS3 语法支持
-    au BufRead,BufNewFile *.css set ft=css syntax=css3
-    " 增加 Objective-C 语法支持
-    au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.m,*.h setf objc
-    " 将指定文件的换行符转换成 UNIX 格式
-    au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
-    " auto switch to current file path
-    " autocmd BufRead * :lcd! %:p:h
-    " scss 文件语法高亮
-    au BufRead,BufNewFile *.scss set filetype=scss
-    " jade syntax
-    au BufRead,BufNewFile *.jade set filetype=jade
-    " compile coffeescript on write
-    au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
+  " JavaScript 语法高亮
+  au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
+  au BufRead,BufNewFile *.js setf jquery
+  " 给各语言文件添加 Dict
+  if has('win32')
+    au FileType php setlocal dict+=$VIM/vimfiles/dict/php_funclist.dict
+    au FileType css setlocal dict+=$VIM/vimfiles/dict/css.dict
+    au FileType javascript setlocal dict+=$VIM/vimfiles/dict/javascript.dict
+  else
+    au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
+    au FileType css setlocal dict+=~/.vim/dict/css.dict
+    au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
+  endif
+  " 格式化 JavaScript 文件
+  au FileType javascript map <f3> :call g:Jsbeautify()<cr>
+  " CSS3 语法支持
+  au BufRead,BufNewFile *.css set ft=css syntax=css3
+  " 增加 Objective-C 语法支持
+  au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.m,*.h setf objc
+  " 将指定文件的换行符转换成 UNIX 格式
+  au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
+  " auto switch to current file path
+  " autocmd BufRead * :lcd! %:p:h
+  " scss 文件语法高亮
+  au BufRead,BufNewFile *.scss set filetype=scss
+  " jade syntax
+  au BufRead,BufNewFile *.jade set filetype=jade
+  " compile coffeescript on write
+  au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 endif
 
 " 自动载入VIM配置文件
@@ -283,13 +335,13 @@ nmap <F5> :so ~/Session.vim<CR>
 " From: Vigil
 " @see http://blog.bs2.to/post/EdwardLee/17961
 function RemoveTrailingWhitespace()
-    if &ft != "diff"
-        let b:curcol = col(".")
-        let b:curline = line(".")
-        silent! %s/\s\+$//
-        silent! %s/\(\s*\n\)\+\%$//
-        call cursor(b:curline, b:curcol)
-    endif
+  if &ft != "diff"
+    let b:curcol = col(".")
+    let b:curline = line(".")
+    silent! %s/\s\+$//
+    silent! %s/\(\s*\n\)\+\%$//
+    call cursor(b:curline, b:curcol)
+  endif
 endfunction
 
 autocmd BufWritePre * call RemoveTrailingWhitespace()
@@ -305,73 +357,73 @@ inoremap ] <c-r>=ClosePair(']')<CR>
 inoremap < <c-r>=OpenPair('<')<CR>
 inoremap > <c-r>=ClosePair('>')<CR>
 function! OpenPair(char)
-    let PAIRs = {
-                \ '{' : '}',
-                \ '[' : ']',
-                \ '(' : ')',
-                \ '<' : '>'
-                \}
-    if line('$')>2000
-        let line = getline('.')
+  let PAIRs = {
+        \ '{' : '}',
+        \ '[' : ']',
+        \ '(' : ')',
+        \ '<' : '>'
+        \}
+  if line('$')>2000
+    let line = getline('.')
 
-        let txt = strpart(line, col('.')-1)
-    else
-        let lines = getline(1,line('$'))
-        let line=""
-        for str in lines
-            let line = line . str . "\n"
-        endfor
+    let txt = strpart(line, col('.')-1)
+  else
+    let lines = getline(1,line('$'))
+    let line=""
+    for str in lines
+      let line = line . str . "\n"
+    endfor
 
-        let blines = getline(line('.')-1, line("$"))
-        let txt = strpart(getline("."), col('.')-1)
-        for str in blines
-            let txt = txt . str . "\n"
-        endfor
-    endif
-    let oL = len(split(line, a:char, 1))-1
-    let cL = len(split(line, PAIRs[a:char], 1))-1
+    let blines = getline(line('.')-1, line("$"))
+    let txt = strpart(getline("."), col('.')-1)
+    for str in blines
+      let txt = txt . str . "\n"
+    endfor
+  endif
+  let oL = len(split(line, a:char, 1))-1
+  let cL = len(split(line, PAIRs[a:char], 1))-1
 
-    let ol = len(split(txt, a:char, 1))-1
-    let cl = len(split(txt, PAIRs[a:char], 1))-1
+  let ol = len(split(txt, a:char, 1))-1
+  let cl = len(split(txt, PAIRs[a:char], 1))-1
 
-    if oL>=cL || (oL<cL && ol>=cl)
-        return a:char . PAIRs[a:char] . "\<Left>"
-    else
-        return a:char
-    endif
+  if oL>=cL || (oL<cL && ol>=cl)
+    return a:char . PAIRs[a:char] . "\<Left>"
+  else
+    return a:char
+  endif
 endfunction
 function! ClosePair(char)
-    if getline('.')[col('.')-1] == a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
+  if getline('.')[col('.')-1] == a:char
+    return "\<Right>"
+  else
+    return a:char
+  endif
 endf
 
 inoremap ' <c-r>=CompleteQuote("'")<CR>
 inoremap " <c-r>=CompleteQuote('"')<CR>
 function! CompleteQuote(quote)
-    let ql = len(split(getline('.'), a:quote, 1))-1
-    let slen = len(split(strpart(getline("."), 0, col(".")-1), a:quote, 1))-1
-    let elen = len(split(strpart(getline("."), col(".")-1), a:quote, 1))-1
-    let isBefreQuote = getline('.')[col('.') - 1] == a:quote
+  let ql = len(split(getline('.'), a:quote, 1))-1
+  let slen = len(split(strpart(getline("."), 0, col(".")-1), a:quote, 1))-1
+  let elen = len(split(strpart(getline("."), col(".")-1), a:quote, 1))-1
+  let isBefreQuote = getline('.')[col('.') - 1] == a:quote
 
-    if '"'==a:quote && "vim"==&ft && 0==match(strpart(getline('.'), 0, col('.')-1), "^[\t ]*$")
-        " for vim comment.
-        return a:quote
-    elseif "'"==a:quote && 0==match(getline('.')[col('.')-2], "[a-zA-Z0-9]")
-        " for Name's Blog.
-        return a:quote
-    elseif (ql%2)==1
-        " a:quote length is odd.
-        return a:quote
-    elseif ((slen%2)==1 && (elen%2)==1 && !isBefreQuote) || ((slen%2)==0 && (elen%2)==0)
-        return a:quote . a:quote . "\<Left>"
-    elseif isBefreQuote
-        return "\<Right>"
-    else
-        return a:quote . a:quote . "\<Left>"
-    endif
+  if '"'==a:quote && "vim"==&ft && 0==match(strpart(getline('.'), 0, col('.')-1), "^[\t ]*$")
+    " for vim comment.
+    return a:quote
+  elseif "'"==a:quote && 0==match(getline('.')[col('.')-2], "[a-zA-Z0-9]")
+    " for Name's Blog.
+    return a:quote
+  elseif (ql%2)==1
+    " a:quote length is odd.
+    return a:quote
+  elseif ((slen%2)==1 && (elen%2)==1 && !isBefreQuote) || ((slen%2)==0 && (elen%2)==0)
+    return a:quote . a:quote . "\<Left>"
+  elseif isBefreQuote
+    return "\<Right>"
+  else
+    return a:quote . a:quote . "\<Left>"
+  endif
 endfunction
 
 
@@ -402,7 +454,7 @@ nmap <C-Tab> :tabnext<cr>
 nmap q :x<cr>
 
 " 打开日历快捷键
-" map ca :Calendar<cr>" 快速修改 vimrc 文件
+" map ca :Calendar<cr>
 
 " 快速重载入 vimrc
 nmap <leader>s : source ~/.vim/vimrc <CR>
@@ -416,10 +468,10 @@ vnoremap  #  y?<C-R>=escape(@", '\\/.*$^~[]')<CR><CR>
 map <leader>jt  <Esc>:%!json_xs -f json -t json-pretty<CR>
 
 if has("gui_macvim")
-    " Set input method off
-    set imdisable
-    " 如果为空文件，则自动设置当前目录为桌面
-    lcd ~/Desktop/
+  " Set input method off
+  set imdisable
+  " 如果为空文件，则自动设置当前目录为桌面
+  lcd ~/Desktop/
 endif
 
 " 可视化模式下使用 tab 和 shift-tab 缩进
@@ -438,15 +490,13 @@ nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 " NERDTree
 map td :NERDTreeToggle <CR>
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 " 显示 NERDTree Bookmark
 let NERDTreeShowBookmarks=1
 
 " 设置 burexploer 快捷键
 nmap <C-e> :BufExplorer<cr>
 nmap <f2>  :BufExplorer<cr>
-
-" shire vim config
-let g:shirevim#app="movie"
 
 
 " =====================
@@ -455,17 +505,6 @@ let g:shirevim#app="movie"
 "
 set wildmenu
 set wildmode=longest:full,full
-
-" use vundle manage plugins
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" Syntastic
-"let g:syntastic_python_checker = 'flake8'
-"let g:syntastic_python_checker_args = '--ignore="E401,E501"'
-"let g:syntastic_javascript_checker = 'jshint'
-"let g:loaded_html_syntax_checker = 1
-"let g:syntastic_auto_loc_list=0
 
 " status bar
 set laststatus=2
@@ -481,33 +520,62 @@ nnoremap <F3> :CtrlSF<space>
 "nmap <F3> <ESC>:CtrlSF <c-r><c-w><CR>
 nmap <C-F3> <ESC>:CtrlSFOpen<CR>
 
+augroup vimrc_autocmds
+  autocmd!
+  " highlight characters past column 120
+  autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+  autocmd FileType python match Excess /\%120v.*/
+  autocmd FileType python set nowrap
+  augroup END
 
-" let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-" other plugins
-Bundle 'scrooloose/nerdtree'
-Bundle 'bufexplorer.zip'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'jsbeautify'
-Bundle 'undofile.vim'
-"Bundle 'Rainbow-Parenthsis-Bundle'
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-fugitive'
-"Bundle 'tpope/vim-haml'
-Bundle 'Lokaltog/vim-powerline'
-"Bundle 'statianzo/vim-jade'
-Bundle 'digitaltoad/vim-jade'
-Bundle 'msanders/snipmate.vim'
-"Bundle 'Lokaltog/vim-easymotion'
-Bundle 'skammer/vim-css-color'
-"Bundle 'nono/vim-handlebars'
-Bundle 'suan/vim-instant-markdown'
-Bundle 'cakebaker/scss-syntax.vim'
-"Bundle 'kchmck/vim-coffee-script'
-Bundle 'scrooloose/syntastic'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'vim-scripts/Conque-Shell'
-Bundle 'kien/ctrlp.vim'
-Bundle 'rking/ag.vim'
-Bundle 'groenewege/vim-less'
-Bundle 'dyng/ctrlsf.vim'
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 1
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+"au VimEnter *  NERDTree ~/Documents/work/athena
+
+" vim airline
+let g:airline_section_a = airline#section#create(['mode', ' ', 'brnach'])
+let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
+let g:airline_section_c = airline#section#create(['filetype'])
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_detect_modified=1
+let g:airline_detect_paste=1
+let g:airline_inactive_collapse=1
