@@ -19,35 +19,25 @@ Plugin 'bufexplorer.zip'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'jsbeautify'
 Plugin 'undofile.vim'
-"Bundle 'Rainbow-Parenthsis-Bundle'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
-"Bundle 'tpope/vim-haml'
-"Plugin 'Lokaltog/vim-powerline'
 Plugin 'bling/vim-airline'
-"Bundle 'statianzo/vim-jade'
-"Bundle 'digitaltoad/vim-jade'
 Plugin 'msanders/snipmate.vim'
-"Bundle 'Lokaltog/vim-easymotion'
 Plugin 'skammer/vim-css-color'
-"Bundle 'nono/vim-handlebars'
 Plugin 'suan/vim-instant-markdown'
-"Bundle 'cakebaker/scss-syntax.vim'
-"Bundle 'kchmck/vim-coffee-script'
-"Bundle 'scrooloose/syntastic'
-"Bundle 'kchmck/vim-coffee-script'
 Plugin 'vim-scripts/Conque-Shell'
 Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
-"Bundle 'groenewege/vim-less'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'walm/jshint.vim'
-"Bundle 'altercation/vim-colors-solarized'
 Plugin 'wavded/vim-stylus'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-scripts/mako.vim'
-Plugin 'klen/python-mode'
-Plugin 'comments.vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'Raimondi/delimitMate'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'ternjs/tern_for_vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -229,9 +219,13 @@ set backspace=indent,eol,start
 
 " 代码折叠
 set foldmethod=indent
+" 保存文件的折叠状态
+au BufWinLeave * silent mkview
+" 恢复文件的折叠状态
+au BufRead * silent loadview
 set nowrap
 
-"带有如下符号的单词不要被换行分割
+" 带有如下符号的单词不要被换行分割
 set iskeyword+=_,$,@,%,#,-" 显示tab和空格
 set list
 
@@ -334,17 +328,17 @@ nmap <F5> :so ~/Session.vim<CR>
 " Remove trailing whitespace when writing a buffer, but not for diff files.
 " From: Vigil
 " @see http://blog.bs2.to/post/EdwardLee/17961
-function RemoveTrailingWhitespace()
-  if &ft != "diff"
-    let b:curcol = col(".")
-    let b:curline = line(".")
-    silent! %s/\s\+$//
-    silent! %s/\(\s*\n\)\+\%$//
-    call cursor(b:curline, b:curcol)
-  endif
-endfunction
+"function RemoveTrailingWhitespace()
+"  if &ft != "diff"
+"    let b:curcol = col(".")
+"    let b:curline = line(".")
+"    silent! %s/\s\+$//
+"    silent! %s/\(\s*\n\)\+\%$//
+"    call cursor(b:curline, b:curcol)
+"  endif
+"endfunction
 
-autocmd BufWritePre * call RemoveTrailingWhitespace()
+"autocmd BufWritePre * call RemoveTrailingWhitespace()
 
 
 " 自动补全括号
@@ -493,6 +487,15 @@ map td :NERDTreeToggle <CR>
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 " 显示 NERDTree Bookmark
 let NERDTreeShowBookmarks=1
+" 当不带参数打开Vim时自动加载项目树
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" 当所有文件关闭时关闭项目树窗格
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" 不显示这些文件
+let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
+" 不显示项目树上额外的信息，例如帮助、提示什么的
+let NERDTreeMinimalUI=1
 
 " 设置 burexploer 快捷键
 nmap <C-e> :BufExplorer<cr>
@@ -528,49 +531,6 @@ augroup vimrc_autocmds
   autocmd FileType python set nowrap
   augroup END
 
-" Python-mode
-" Activate rope
-" Keys:
-" K             Show python docs
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1
-
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
-
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checker = "pep8"
-" Auto check on save
-let g:pymode_lint_write = 1
-
-" Support virtualenv
-let g:pymode_virtualenv = 1
-
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_bind = '<leader>b'
-
-" syntax highlighting
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
-" Don't autofold code
-let g:pymode_folding = 0
-
-"au VimEnter *  NERDTree ~/Documents/work/athena
-
 " vim airline
 let g:airline_section_a = airline#section#create(['mode', ' ', 'brnach'])
 let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
@@ -579,3 +539,23 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_inactive_collapse=1
+
+" tern for ivm
+" 鼠标停留在方法内时显示参数提示
+let g:tern_show_argument_hints = 'on_hold'
+" 补全时显示函数类型定义
+let g:tern_show_signature_in_pum = 1
+" 跳转到浏览器
+nnoremap <leader>tb :TernDocBrowse<cr>
+" 显示变量定义
+nnoremap <leader>tt :TernType<cr>
+" 跳转到定义处
+nnoremap <leader>tf :TernDef<cr>
+" 显示文档
+nnoremap <leader>td :TernDoc<cr>
+" 预览窗口显示定义处代码
+nnoremap <leader>tp :TernDefPreview<cr>
+" 变量重命名
+nnoremap <leader>tr :TernRename<cr>
+" location 列表显示全部引用行
+nnoremap <leader>ts :TernRefs<cr>
