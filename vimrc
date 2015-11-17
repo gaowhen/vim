@@ -14,10 +14,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 " other plugins
+Plugin 'jlanzarotta/bufexplorer'
 Plugin 'scrooloose/nerdtree'
-Plugin 'bufexplorer.zip'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'jsbeautify'
 Plugin 'undofile.vim'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
@@ -25,7 +23,6 @@ Plugin 'bling/vim-airline'
 Plugin 'msanders/snipmate.vim'
 Plugin 'skammer/vim-css-color'
 Plugin 'suan/vim-instant-markdown'
-Plugin 'vim-scripts/Conque-Shell'
 Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'dyng/ctrlsf.vim'
@@ -35,12 +32,14 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-scripts/mako.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'Raimondi/delimitMate'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'ternjs/tern_for_vim'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-surround'
+Plugin 'Yggdroot/indentLine'
 call vundle#end()
 filetype plugin indent on
-
 
 " ====================
 " Enviroment
@@ -193,6 +192,10 @@ hi MatchParen ctermfg=green
 " GLOBAL CONFIG
 " ====================
 "
+" The 'autoindent' option is reset when the 'paste' option is set
+" when having set paste in vimrc file, set paste must exist firstly.
+set paste
+
 " 使用空格来替换tab
 set expandtab
 set tabstop=2
@@ -207,9 +210,10 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType jade setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
-" 缩进
-set autoindent " 设置自动缩进
-set smartindent " 设置智能缩进
+filetype plugin indent on
+set autoindent
+set smartindent
+
 " 自动重新读入
 set autoread " 当文件在外部被修改，自动更新该文件
 " 设定在任何模式下鼠标都可用
@@ -226,17 +230,14 @@ au BufRead * silent loadview
 set nowrap
 
 " 带有如下符号的单词不要被换行分割
-set iskeyword+=_,$,@,%,#,-" 显示tab和空格
-set list
+" set iskeyword+=_,$,@,%,#,- " 显示tab和空格
+set nolist
 
-" 设置tab和空格样式
-set listchars=tab:\|\ ,nbsp:%,trail:-
+" indent
+let g:indentLine_char = '︙'
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#A4E57E'
 
-" 设定行首tab为灰色
-highlight LeaderTab guifg=#ccc
-
-" 匹配行首tab
-match LeaderTab /\t/
 
 " 搜索时无视大小写
 " set ignorecase
@@ -245,7 +246,6 @@ set smartcase
 set hlsearch
 " 在输入要搜索的文字时，vim会实时匹配
 set incsearch
-set paste
 
 
 "cliboard seting
@@ -274,8 +274,9 @@ set rnu
 " AutoCmd 自动运行
 " =====================
 
+filetype plugin indent on " 打开文件类型检测
+
 if has("autocmd")
-  filetype plugin indent on " 打开文件类型检测
   augroup vimrcEx " 记住上次文件位置
     au!
     autocmd FileType text setlocal textwidth=80
@@ -289,27 +290,16 @@ if has("autocmd")
   au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
   au BufRead,BufNewFile *.js setf jquery
   " 给各语言文件添加 Dict
-  if has('win32')
-    au FileType php setlocal dict+=$VIM/vimfiles/dict/php_funclist.dict
-    au FileType css setlocal dict+=$VIM/vimfiles/dict/css.dict
-    au FileType javascript setlocal dict+=$VIM/vimfiles/dict/javascript.dict
-  else
-    au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
-    au FileType css setlocal dict+=~/.vim/dict/css.dict
-    au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
-  endif
-  " 格式化 JavaScript 文件
-  au FileType javascript map <f3> :call g:Jsbeautify()<cr>
+	au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
+	au FileType css setlocal dict+=~/.vim/dict/css.dict
+	au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
+
   " CSS3 语法支持
   au BufRead,BufNewFile *.css set ft=css syntax=css3
-  " 增加 Objective-C 语法支持
-  au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.m,*.h setf objc
   " 将指定文件的换行符转换成 UNIX 格式
   au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
   " auto switch to current file path
   " autocmd BufRead * :lcd! %:p:h
-  " scss 文件语法高亮
-  au BufRead,BufNewFile *.scss set filetype=scss
   " jade syntax
   au BufRead,BufNewFile *.jade set filetype=jade
   " compile coffeescript on write
@@ -324,102 +314,8 @@ set sessionoptions=buffers,sesdir,help,tabpages,winsize
 au VimLeave * mks! ~/Session.vim
 nmap <F5> :so ~/Session.vim<CR>
 
-"在保存文件时自动去除无效空白，包括行尾空白和文件最后的空行
-" Remove trailing whitespace when writing a buffer, but not for diff files.
-" From: Vigil
-" @see http://blog.bs2.to/post/EdwardLee/17961
-"function RemoveTrailingWhitespace()
-"  if &ft != "diff"
-"    let b:curcol = col(".")
-"    let b:curline = line(".")
-"    silent! %s/\s\+$//
-"    silent! %s/\(\s*\n\)\+\%$//
-"    call cursor(b:curline, b:curcol)
-"  endif
-"endfunction
-
-"autocmd BufWritePre * call RemoveTrailingWhitespace()
-
-
-" 自动补全括号
-inoremap ( <c-r>=OpenPair('(')<CR>
-inoremap ) <c-r>=ClosePair(')')<CR>
-inoremap { <c-r>=OpenPair('{')<CR>
-inoremap } <c-r>=ClosePair('}')<CR>
-inoremap [ <c-r>=OpenPair('[')<CR>
-inoremap ] <c-r>=ClosePair(']')<CR>
-inoremap < <c-r>=OpenPair('<')<CR>
-inoremap > <c-r>=ClosePair('>')<CR>
-function! OpenPair(char)
-  let PAIRs = {
-        \ '{' : '}',
-        \ '[' : ']',
-        \ '(' : ')',
-        \ '<' : '>'
-        \}
-  if line('$')>2000
-    let line = getline('.')
-
-    let txt = strpart(line, col('.')-1)
-  else
-    let lines = getline(1,line('$'))
-    let line=""
-    for str in lines
-      let line = line . str . "\n"
-    endfor
-
-    let blines = getline(line('.')-1, line("$"))
-    let txt = strpart(getline("."), col('.')-1)
-    for str in blines
-      let txt = txt . str . "\n"
-    endfor
-  endif
-  let oL = len(split(line, a:char, 1))-1
-  let cL = len(split(line, PAIRs[a:char], 1))-1
-
-  let ol = len(split(txt, a:char, 1))-1
-  let cl = len(split(txt, PAIRs[a:char], 1))-1
-
-  if oL>=cL || (oL<cL && ol>=cl)
-    return a:char . PAIRs[a:char] . "\<Left>"
-  else
-    return a:char
-  endif
-endfunction
-function! ClosePair(char)
-  if getline('.')[col('.')-1] == a:char
-    return "\<Right>"
-  else
-    return a:char
-  endif
-endf
-
-inoremap ' <c-r>=CompleteQuote("'")<CR>
-inoremap " <c-r>=CompleteQuote('"')<CR>
-function! CompleteQuote(quote)
-  let ql = len(split(getline('.'), a:quote, 1))-1
-  let slen = len(split(strpart(getline("."), 0, col(".")-1), a:quote, 1))-1
-  let elen = len(split(strpart(getline("."), col(".")-1), a:quote, 1))-1
-  let isBefreQuote = getline('.')[col('.') - 1] == a:quote
-
-  if '"'==a:quote && "vim"==&ft && 0==match(strpart(getline('.'), 0, col('.')-1), "^[\t ]*$")
-    " for vim comment.
-    return a:quote
-  elseif "'"==a:quote && 0==match(getline('.')[col('.')-2], "[a-zA-Z0-9]")
-    " for Name's Blog.
-    return a:quote
-  elseif (ql%2)==1
-    " a:quote length is odd.
-    return a:quote
-  elseif ((slen%2)==1 && (elen%2)==1 && !isBefreQuote) || ((slen%2)==0 && (elen%2)==0)
-    return a:quote . a:quote . "\<Left>"
-  elseif isBefreQuote
-    return "\<Right>"
-  else
-    return a:quote . a:quote . "\<Left>"
-  endif
-endfunction
-
+" auto remove trailing whitespace
+autocmd BufWritePre * StripWhitespace
 
 
 " =====================
@@ -438,7 +334,6 @@ nmap <leader>s :w!<cr>
 nmap <leader>w :wq!<cr>
 nmap <leader>q :q!<cr>
 nmap <C-t>   :tabnew<cr>
-"nmap <C-p>   :tabprevious<cr>
 nmap <C-n>   :tabnext<cr>
 nmap <C-k>   :tabclose<cr>
 nmap <C-Tab> :tabnext<cr>
@@ -446,9 +341,6 @@ nmap <C-Tab> :tabnext<cr>
 
 " 按下 Q 不进入 Ex 模式，而是退出
 nmap q :x<cr>
-
-" 打开日历快捷键
-" map ca :Calendar<cr>
 
 " 快速重载入 vimrc
 nmap <leader>s : source ~/.vim/vimrc <CR>
