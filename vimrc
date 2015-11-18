@@ -34,6 +34,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'mxw/vim-jsx'
+Plugin 'Yggdroot/indentLine'
 "Plugin 'Valloric/YouCompleteMe'
 call vundle#end()
 filetype plugin indent on
@@ -443,3 +444,16 @@ nnoremap <leader>ts :TernRefs<cr>
 
 " Allow JSX in normal JS files
 let g:jsx_ext_required = 0
+
+" indent line
+" Vim
+let g:indentLine_color_term = 046
+
+"GVim
+let g:indentLine_color_gui = '#A4E57E'
+
+" none X terminal
+let g:indentLine_enabled = 1
+let g:indentLine_char = '︙'
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
