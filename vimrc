@@ -29,12 +29,12 @@ Plugin 'wavded/vim-stylus'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-scripts/mako.vim'
 Plugin 'scrooloose/nerdcommenter'
-"Plugin 'Valloric/YouCompleteMe'
 "Plugin 'Chiel92/vim-autoformat'
 "Plugin 'ternjs/tern_for_vim'
-"Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
+Plugin 'mxw/vim-jsx'
+"Plugin 'Valloric/YouCompleteMe'
 call vundle#end()
 filetype plugin indent on
 
@@ -179,21 +179,17 @@ hi MatchParen ctermfg=green
 "
 " The 'autoindent' option is reset when the 'paste' option is set
 " when having set paste in vimrc file, set paste must exist firstly.
-set paste
+"set paste
 
 " 使用空格来替换tab
-set expandtab
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set smarttab
+set expandtab
 
 " 自动设置 tab 宽度
-autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 textwidth=79
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType jade setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 set autoindent
 set smartindent
@@ -445,3 +441,5 @@ nnoremap <leader>tr :TernRename<cr>
 " location 列表显示全部引用行
 nnoremap <leader>ts :TernRefs<cr>
 
+" Allow JSX in normal JS files
+let g:jsx_ext_required = 0
