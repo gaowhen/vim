@@ -53,6 +53,7 @@ set history=500
 " =====================
 
 if has("multi_byte")
+  scriptencoding utf-8
   set encoding=utf-8
   " English messages only
   " language messages zh_CN.utf-8
@@ -127,9 +128,6 @@ if has('gui_running')
   endif
 endif
 
-autocmd WinEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
-
 set ruler " show rulerset number " show line number
 set rulerformat=%15(%c%V\ %p%%%)
 
@@ -161,9 +159,11 @@ endif
 "Highlight current
 set cursorline
 set cursorcolumn
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
 hi cursorline cterm=none term=none
-hi CursorLine guibg=#0D142C ctermbg=0D142C
-hi CursorColumn guibg=#0D142C ctermbg=0D142C
+hi CursorLine guibg=#0D142C ctermbg=233
+hi CursorColumn guibg=#0D142C ctermbg=244
 " fold colors
 hi Folded cterm=none ctermbg=none ctermfg=4
 hi FoldColumn cterm=none ctermbg=none ctermfg=4
@@ -223,10 +223,10 @@ set list
 
 " 设置tab和空格样式
 set listchars=tab:\|\ ,nbsp:%,trail:-
-hi SpecialKey ctermfg=244 guifg=#696969
+hi SpecialKey ctermfg=046 guifg=#00ff00
 
 " 设定行首tab为灰色
-highlight LeaderTab guifg=#666666
+highlight LeaderTab ctermfg=046 guifg=#666666
 
 " 匹配行首tab
 match LeaderTab /\t/
