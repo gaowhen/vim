@@ -35,7 +35,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'mxw/vim-jsx'
 Plugin 'Yggdroot/indentLine'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Valloric/YouCompleteMe'
 call vundle#end()
 filetype plugin indent on
 
@@ -164,7 +165,7 @@ autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 hi cursorline cterm=none term=none
 hi CursorLine guibg=#0D142C ctermbg=233
-hi CursorColumn guibg=#0D142C ctermbg=244
+hi CursorColumn guibg=#0D142C ctermbg=233
 " fold colors
 hi Folded cterm=none ctermbg=none ctermfg=4
 hi FoldColumn cterm=none ctermbg=none ctermfg=4
@@ -212,14 +213,14 @@ au BufRead * silent loadview
 set nowrap
 
 " donot show $ at end of lines
-"set nolist
+set nolist
 
 " 带有如下符号的单词不要被换行分割
 set iskeyword+=_,$,@,%,#,-" 显示tab和空格
-set list
+"set list
 
 " 设置tab和空格样式
-set listchars=tab:\|\ ,nbsp:%,trail:-
+"set listchars=tab:\|\ ,nbsp:%,trail:-
 hi SpecialKey ctermfg=046 guifg=#00ff00
 
 " 设定行首tab为灰色
