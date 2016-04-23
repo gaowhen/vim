@@ -1,0 +1,33 @@
+snippet cs "React.Component" b
+class ${0} extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+
+	render() {
+		return (
+			${1}
+		)
+	}
+}
+endsnippet
+
+snippet constructor "constructor" b
+constructor(props) {
+	super(props)
+
+	this.state = {
+		${0}
+	}
+}
+endsnippet
+
+snippet cwr "component will receive props"
+componentWillReceiveProps(props) {
+	this.setState({
+		${0}
+	})
+}
+endsnippet
+
+

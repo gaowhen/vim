@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/gaowhen/.vim'
+let g:netrw_dirhist_2='/Users/gaowhen/Documents/work/athena'
+let g:netrw_dirhist_3='/Users/gaowhen/Documents/lab/lodash'
+let g:netrw_dirhist_4='/Users/gaowhen/Documents/work/athena'
+let g:netrw_dirhist_5='/Users/gaowhen/Documents/lab/underscore'
+let g:netrw_dirhist_6='/Users/gaowhen/Documents/work/athena'

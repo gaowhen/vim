@@ -19,24 +19,29 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
-Plugin 'msanders/snipmate.vim'
+"Plugin 'msanders/snipmate.vim'
 Plugin 'skammer/vim-css-color'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
-Plugin 'walm/jshint.vim'
-Plugin 'wavded/vim-stylus'
+"Plugin 'walm/jshint.vim'
+"Plugin 'wavded/vim-stylus'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'vim-scripts/mako.vim'
+"Plugin 'vim-scripts/mako.vim'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'Chiel92/vim-autoformat'
 "Plugin 'ternjs/tern_for_vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'mxw/vim-jsx'
-Plugin 'Yggdroot/indentLine'
-Plugin 'Shougo/neocomplete.vim'
+"Plugin 'Shougo/neocomplete.vim'
+Plugin 'ervandew/supertab'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'yonchu/accelerated-smooth-scroll'
+Plugin 'SirVer/ultisnips'
 call vundle#end()
 filetype plugin indent on
 
@@ -215,27 +220,6 @@ set nowrap
 " donot show $ at end of lines
 set nolist
 
-" 带有如下符号的单词不要被换行分割
-set iskeyword+=_,$,@,%,#,-" 显示tab和空格
-"set list
-
-" 设置tab和空格样式
-"set listchars=tab:\|\ ,nbsp:%,trail:-
-hi SpecialKey ctermfg=046 guifg=#00ff00
-
-" 设定行首tab为灰色
-highlight LeaderTab ctermfg=046 guifg=#666666
-
-" 匹配行首tab
-match LeaderTab /\t/
-
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
-
 " 搜索时无视大小写
 " set ignorecase
 set smartcase
@@ -292,8 +276,6 @@ au BufRead,BufNewFile *.css set ft=css syntax=css3
 au FileType php,javascript,html,css,python,vim,vimwiki set ff=unix
 " jade syntax
 au BufRead,BufNewFile *.jade set filetype=jade
-" compile coffeescript on write
-au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 
 " 自动载入VIM配置文件
 autocmd! bufwritepost vimrc source $MYVIMRC
@@ -315,7 +297,6 @@ fun! StripTrailingWhitespace()
 endfun
 
 autocmd BufWritePre * call StripTrailingWhitespace()
-
 
 " =====================
 " HOT KEYS
@@ -380,14 +361,14 @@ nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 " NERDTree
 map td :NERDTreeToggle <CR>
 " 显示 NERDTree Bookmark
-let NERDTreeShowBookmarks=1
+"let NERDTreeShowBookmarks=1
 
 " 当不带参数打开Vim时自动加载项目树
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " 当所有文件关闭时关闭项目树窗格
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " 不显示这些文件
 let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
@@ -423,26 +404,6 @@ let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_inactive_collapse=1
 
-" tern for ivm
-" 鼠标停留在方法内时显示参数提示
-let g:tern_show_argument_hints = 'on_hold'
-" 补全时显示函数类型定义
-let g:tern_show_signature_in_pum = 1
-" 跳转到浏览器
-nnoremap <leader>tb :TernDocBrowse<cr>
-" 显示变量定义
-nnoremap <leader>tt :TernType<cr>
-" 跳转到定义处
-nnoremap <leader>tf :TernDef<cr>
-" 显示文档
-nnoremap <leader>td :TernDoc<cr>
-" 预览窗口显示定义处代码
-nnoremap <leader>tp :TernDefPreview<cr>
-" 变量重命名
-nnoremap <leader>tr :TernRename<cr>
-" location 列表显示全部引用行
-nnoremap <leader>ts :TernRefs<cr>
-
 " Allow JSX in normal JS files
 let g:jsx_ext_required = 0
 
@@ -453,8 +414,37 @@ let g:indentLine_color_term = 046
 "GVim
 let g:indentLine_color_gui = '#A4E57E'
 
-" none X terminal
-let g:indentLine_enabled = 1
-let g:indentLine_char = '︙'
-let g:indentLine_color_tty_light = 7 " (default: 4)
-let g:indentLine_color_dark = 1 " (default: 2)
+function! CheckLeftBuffers()
+  if tabpagenr('$') == 1
+    let i = 1
+    while i <= winnr('$')
+      if getbufvar(winbufnr(i), '&buftype') == 'help' ||
+          \ getbufvar(winbufnr(i), '&buftype') == 'quickfix' ||
+          \ exists('t:NERDTreeBufName') &&
+          \   bufname(winbufnr(i)) == t:NERDTreeBufName ||
+          \ bufname(winbufnr(i)) == '__Tag_List__'
+        let i += 1
+      else
+        break
+      endif
+    endwhile
+    if i == winnr('$') + 1
+      qall
+    endif
+    unlet i
+  endif
+endfunction
+autocmd BufEnter * call CheckLeftBuffers()
+
+let NERDTreeIgnore = ['\.swp$', '.DS_Store']
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+"let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
