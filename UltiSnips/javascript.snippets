@@ -1,13 +1,19 @@
-snippet log. "console.log(…)" b
+snippet log "console.log(…)" b
 console.log(${0})
 endsnippet
 
-snippet cs "React.Component" b
-class ${0} extends React.Component {
-	constructor(props) {
-		super(props)
-	}
+snippet im "import from" b
+import ${0} from '${1}'
+endsnippet
 
+snippet => "arrow function" b
+(${0}) => {
+	${1}
+}
+endsnippet
+
+snippet class "React.Component" b
+class ${0} extends React.Component {
 	render() {
 		return (
 			${1}
@@ -21,7 +27,7 @@ constructor(props) {
 	super(props)
 
 	this.state = {
-		${0}
+		${0}: ${1},
 	}
 }
 endsnippet
@@ -34,4 +40,35 @@ componentWillReceiveProps(props) {
 }
 endsnippet
 
+snippet propTypes "propsTypes isRequired"
+${0}.propTypes = {
+  ${1}: React.PropTypes.${2}.isRequired,
+}
+endsnippet
+
+snippet isrequired "isRequired" b
+React.PropTypes.${0}.isRequired
+endsnippet
+
+snippet cdu "componentDidUpdate" b
+componentDidUpdate() {
+	${0}
+}
+endsnippet
+
+snippet func "function" b
+function ${0}(${1}) {
+	${2}
+}
+endsnippet
+
+snippet cfun "const name = () => {}" b
+const ${0} = (${1}) => {
+	${2}
+}
+endsnippet
+
+snippet export "export" b
+export ${0} ${1}
+endsnippet
 
